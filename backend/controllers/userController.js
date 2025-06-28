@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 // User Schema
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  user_id: { type: String, required: true, unique: true },
+  user_id: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 });
@@ -17,11 +17,9 @@ exports.registerUser = async (req, res) => {
   const { name, user_id, email, password } = req.body;
   try {
     // Check if user_id or email already exists
-    const existingUser = await User.findOne({ $or: [{ user_id }, { email }] });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: "User ID or Email already exists" });
+      return res.status(400).json({ message: "Email already exists" });
     }
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
