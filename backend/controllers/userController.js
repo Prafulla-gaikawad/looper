@@ -5,8 +5,8 @@ const mongoose = require("mongoose");
 // User Schema
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  user_id: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
+  user_id: { type: String, required: true },
+  email: { type: String, required: true },
   password: { type: String, required: true },
 });
 
@@ -16,12 +16,10 @@ const User = mongoose.model("User", userSchema);
 exports.registerUser = async (req, res) => {
   const { name, user_id, email, password } = req.body;
   try {
-    // Check if user_id or email already exists
-    const existingUser = await User.findOne({ $or: [{ user_id }, { email }] });
+    // Check if email already exists
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: "User ID or Email already exists" });
+      return res.status(400).json({ message: "Email already exists" });
     }
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -47,13 +45,18 @@ exports.loginUser = async (req, res) => {
     }
     // Generate JWT
     const token = jwt.sign(
-      { user_id: user.user_id, email: user.email, name: user.name },
+      { id: user._id, email: user.email, name: user.name },
       process.env.JWT_SECRET || "yoursecretkey",
       { expiresIn: "1h" }
     );
     res.json({
       token,
-      user: { name: user.name, user_id: user.user_id, email: user.email },
+      user: {
+        id: user._id,
+        name: user.name,
+        user_id: user.user_id,
+        email: user.email,
+      },
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });

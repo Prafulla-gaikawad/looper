@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { baseUrl } from "./URL";
 
-export default function Login() {
+export default function Login({ setUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,6 +20,14 @@ export default function Login() {
       const data = await res.json();
       if (res.ok) {
         localStorage.setItem("token", data.token);
+        const payload = JSON.parse(atob(data.token.split(".")[1]));
+        if (setUser) {
+          setUser({
+            name: payload.name,
+            user_id: payload.user_id,
+            email: payload.email,
+          });
+        }
         navigate("/dashboard");
       } else {
         setError(data.message || "Login failed");
