@@ -1,0 +1,81 @@
+import { NavLink } from "react-router-dom";
+import { FiGrid, FiCreditCard, FiPieChart, FiUser } from "react-icons/fi";
+import { BsWallet2 } from "react-icons/bs";
+import { HiOutlineChartBar } from "react-icons/hi";
+
+const navItems = [
+  { to: "/dashboard", label: "Dashboard", icon: <FiGrid size={22} /> },
+  {
+    to: "/transactions",
+    label: "Transactions",
+    icon: <FiCreditCard size={22} />,
+  },
+  {
+    to: "/analytics",
+    label: "Analytics",
+    icon: <HiOutlineChartBar size={22} />,
+  },
+  { to: "/wallet", label: "Wallet", icon: <BsWallet2 size={22} /> },
+  { to: "/personal", label: "Personal", icon: <FiUser size={22} /> },
+];
+
+export default function Sidebar() {
+  return (
+    <aside className="bg-[#1A1C22] min-h-screen w-64 flex flex-col py-8 px-4 gap-2">
+      <div className="flex items-center gap-3 mb-10 pl-2">
+        <span
+          style={{
+            width: "25.81px",
+            height: "27.79px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <svg
+            width="25.81"
+            height="27.79"
+            viewBox="0 0 27 29"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M21.6016 5.17785H10.0906V0.294373L26.4851 0.294373V16.6889H21.6016V5.17785Z"
+              fill="#FFC01E"
+            />
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M12.6101 14.8951C11.8643 14.3968 10.9876 14.1309 10.0907 14.1309V9.24741C11.9535 9.24741 13.7744 9.79977 15.3232 10.8346C16.872 11.8695 18.0791 13.3404 18.792 15.0614C19.5048 16.7823 19.6913 18.676 19.3279 20.5029C18.9645 22.3299 18.0675 24.008 16.7504 25.3252C15.4332 26.6423 13.7551 27.5393 11.9281 27.9027C10.1012 28.2661 8.20751 28.0796 6.48657 27.3668C4.76563 26.6539 3.29472 25.4468 2.25984 23.898C1.22496 22.3492 0.672604 20.5283 0.672607 18.6655L5.55609 18.6655C5.55608 19.5624 5.82204 20.4391 6.32031 21.1849C6.81858 21.9306 7.5268 22.5118 8.3554 22.855C9.184 23.1982 10.0958 23.288 10.9754 23.1131C11.855 22.9381 12.663 22.5062 13.2972 21.872C13.9314 21.2379 14.3633 20.4299 14.5383 19.5502C14.7132 18.6706 14.6234 17.7588 14.2802 16.9302C13.937 16.1016 13.3558 15.3934 12.6101 14.8951Z"
+              fill="#1FCB4F"
+            />
+          </svg>
+        </span>
+        <span className="text-2xl font-bold text-white tracking-wide">
+          Penta
+        </span>
+      </div>
+      <nav className="flex flex-col gap-2">
+        {navItems.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            className={({ isActive }) =>
+              `flex items-center gap-4 px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                isActive
+                  ? "text-[#22c55e] bg-[#1A1C22] font-bold"
+                  : "text-[#bfc9da] hover:text-white hover:bg-[#23242a]"
+              }`
+            }
+          >
+            <span className="flex items-center justify-center">
+              {item.icon}
+            </span>
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
+    </aside>
+  );
+}
