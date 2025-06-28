@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   user_id: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 });
 
@@ -45,18 +45,13 @@ exports.loginUser = async (req, res) => {
     }
     // Generate JWT
     const token = jwt.sign(
-      { id: user._id, email: user.email, name: user.name },
+      { user_id: user.user_id, email: user.email, name: user.name },
       process.env.JWT_SECRET || "yoursecretkey",
       { expiresIn: "1h" }
     );
     res.json({
       token,
-      user: {
-        id: user._id,
-        name: user.name,
-        user_id: user.user_id,
-        email: user.email,
-      },
+      user: { name: user.name, user_id: user.user_id, email: user.email },
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
