@@ -13,6 +13,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
+import { baseUrl } from "./URL";
 
 const COLORS = ["#1abc5b", "#fbbf24"];
 
@@ -27,7 +28,7 @@ export default function AnalyticsPage() {
       setLoading(true);
       setError("");
       try {
-        const res = await fetch("http://localhost:3000/api/transactions");
+        const res = await fetch(`${baseUrl}/api/transactions`);
         const data = await res.json();
         if (res.ok) {
           setTransactions(data.filter((t) => t.user_id === user?.user_id));

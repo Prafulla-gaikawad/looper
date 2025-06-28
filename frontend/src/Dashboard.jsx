@@ -20,6 +20,7 @@ import {
 import { RiCheckboxBlankCircleFill } from "react-icons/ri";
 import { Link, useOutletContext } from "react-router-dom";
 import { useRef } from "react";
+import { baseUrl } from "./URL";
 
 function formatCurrency(amount) {
   return amount < 0
@@ -128,7 +129,7 @@ export default function Dashboard({ user }) {
       setLoading(true);
       setError("");
       try {
-        const res = await fetch("http://localhost:3000/api/transactions");
+        const res = await fetch(`${baseUrl}/api/transactions`);
         const data = await res.json();
         if (res.ok) {
           setTransactions(data.filter((t) => t.user_id === user?.user_id));
