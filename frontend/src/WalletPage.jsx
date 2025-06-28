@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useOutletContext } from "react-router-dom";
+import { baseUrl } from "./URL";
 
 function formatCurrency(amount) {
   return amount < 0
@@ -25,7 +26,7 @@ export default function WalletPage() {
       setLoading(true);
       setError("");
       try {
-        const res = await fetch("http://localhost:3000/api/transactions");
+        const res = await fetch(`${baseUrl}/api/transactions`);
         const data = await res.json();
         if (res.ok) {
           setTransactions(data.filter((t) => t.user_id === user?.user_id));
